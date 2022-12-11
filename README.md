@@ -3,9 +3,13 @@
 ## To-do
 
 [ ] Great League Search String
+
 [ ] Ultra League Search String
+
 [ ] Master League Search String
+
 [ ] Fine Tune Transfer String
+
 [ ] Fine Tune Trade String
 
 ## Resources
