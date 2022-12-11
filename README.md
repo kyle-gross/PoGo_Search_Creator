@@ -7,6 +7,9 @@
 - [ ] Master League Search String
 - [ ] Fine Tune Transfer String
 - [ ] Fine Tune Trade String
+- [ ] Webscraper for GamePress
+- [ ] Webscraper for PvPoke
+- [x] API refresh for PoGo API
 
 ## Resources
 
