@@ -15,7 +15,7 @@ class Search:
         self.pvp_top = pvp_top
         self.pve_dps_tdo = pve_dps_tdo
         self.transfer_list = [
-            '!4*', 'shiny', 'shadow', 'mythical', 'legendary', 'ultra beast'
+            '!4*', 'shiny', 'shadow', 'mythical', 'legendary', 'ultra beast', '@special'
         ]
         self.trade_list = [
             '!4*', 'shiny', 'shadow', 'traded', 'mythical'
