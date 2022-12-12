@@ -14,15 +14,17 @@ class Search:
     def __init__(self, pvp_top, pve_dps_tdo, personal_tags=[]):
         self.pvp_top = pvp_top
         self.pve_dps_tdo = pve_dps_tdo
-        self.transfer_list = [
-            '!4*', 'shiny', 'shadow', 'mythical', 'legendary', 'ultra beast', '@special'
-        ]
-        self.trade_list = [
-            '!4*', 'shiny', 'shadow', 'traded', 'mythical'
-        ]
+        self.transfer_list = ['!4*', 'shiny', 'shadow', 'mythical', 'legendary', 'ultra beast', '@special']
+        self.trade_list = ['!4*', 'shiny', 'shadow', 'traded', 'mythical']
+        self.pvp_list = ['0attack,1attack', '2-3defense', '2-3hp', 'cp-1500']
+        self.pve_list = ['4*', '3*']
         self.personal_tags = personal_tags
         self.transfer_str = ''
         self.trade_str = ''
+        self.gl_str = ''
+        self.ul_str = ''
+        self.ml_str = ''
+        self.pve_str = ''
         self.dex_names = self.get_full_dex()
 
     ### Search string generators ###
@@ -46,17 +48,40 @@ class Search:
             if pokemon is not None:
                 self.trade_str += ', +' + pokemon
 
+    def create_pve_str(self):
+        self.pve_str = ', '.join(self.pve_list) + ', '
+        self.pve_str += ', '.join(self.create_pve_pvp_list(type='pve'))
+    
+    def create_pvp_str(self, league=None):
+        if league is None:
+            raise ValueError('Please specify a league value (\'GL\' or \'UL\'')
+        if league not in ['GL', 'UL']:
+            raise ValueError('Incorrect league. Please specify: \'GL\' or \'UL\'')
+        league_list = self.create_pve_pvp_list(type='pvp', league=league)
+        if league == 'GL':
+            self.gl_str = ' &'.join(self.pvp_list) + ', '
+            self.gl_str += ', +'.join(league_list)
+        if league == 'UL':
+            self.ul_str = ' &'.join(self.pvp_list) + ', '
+            self.ul_str += ', +'.join(league_list)
+
     ### List generators ###
-    def create_pve_pvp_list(self, type):
+    def create_pve_pvp_list(self, type, league=None):
+        if type == None:
+            raise ValueError('Please specify \"pve\" or \"pvp\"')
         pkmn_list = []
         if type == 'pve':
             for type in Search.type_list:
                 df = self.get_pve_data(type)
                 pkmn_list.extend(df.Pokemon.tolist())
         if type == 'pvp':
-            for league in Search.league_list:
+            if league == None:
+                for league in Search.league_list:
+                    df = self.get_pvp_data(league)
+                    pkmn_list.extend(df.Pokemon.tolist())
+            else:
                 df = self.get_pvp_data(league)
-                pkmn_list.extend(df.Pokemon.tolist())
+                pkmn_list.extend(df.Pokemon.to_list())
         return pkmn_list
 
     def create_transfer_list(self):
